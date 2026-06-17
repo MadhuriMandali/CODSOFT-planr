@@ -10,13 +10,14 @@ const taskSchema = new mongoose.Schema({
 }, { timestamps:true });
 
 const projectSchema = new mongoose.Schema({
-  name:        { type:String, required:true, trim:true },
-  description: { type:String, default:'' },
-  deadline:    { type:String, default:'' },
-  palette:     { type:Number, default:0, min:0, max:5 },
-  owner:       { type:mongoose.Schema.Types.ObjectId, ref:'User', required:true },
-  members:     [{ type:mongoose.Schema.Types.ObjectId, ref:'User' }],
-  tasks:       [taskSchema],
+  name:            { type:String, required:true, trim:true },
+  description:     { type:String, default:'' },
+  deadline:        { type:String, default:'' },
+  palette:         { type:Number, default:0, min:0, max:5 },
+  owner:           { type:mongoose.Schema.Types.ObjectId, ref:'User', required:true },
+  members:         [{ type:mongoose.Schema.Types.ObjectId, ref:'User' }],
+  assignedMembers: [{ type:String }],   // ← stores member IDs from the frontend
+  tasks:           [taskSchema],
 }, { timestamps:true });
 
 projectSchema.virtual('progress').get(function() {

@@ -35,11 +35,14 @@ router.put('/:id', async (req, res, next) => {
     const p = await Project.findById(req.params.id);
     if (!p) return res.status(404).json({ message:'Not found' });
     if (!p.owner.equals(req.user._id)) return res.status(403).json({ message:'Forbidden' });
-    const { name, description, deadline, palette } = req.body;
-    if (name        !==undefined) p.name        = name;
-    if (description !==undefined) p.description = description;
-    if (deadline    !==undefined) p.deadline    = deadline;
-    if (palette     !==undefined) p.palette     = palette;
+
+    const { name, description, deadline, palette, assignedMembers } = req.body;
+    if (name            !== undefined) p.name            = name;
+    if (description     !== undefined) p.description     = description;
+    if (deadline        !== undefined) p.deadline        = deadline;
+    if (palette         !== undefined) p.palette         = palette;
+    if (assignedMembers !== undefined) p.assignedMembers = assignedMembers; // ← fix
+
     await p.save();
     res.json(p);
   } catch(e){ next(e); }
